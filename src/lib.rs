@@ -410,7 +410,7 @@ impl From<&Axiom> for PySimpleAxiom {
 #[derive(Default)]
 struct PyIndexedOntology {
 
-    //State variables private to Rust, exposed through methods to Python
+    #[pyo3(get, set)]
     labels_to_iris: HashMap<String,IRI>,
 
     classes_to_subclasses: HashMap<IRI,HashSet<IRI>>, //axiom typed index would give subclass axioms

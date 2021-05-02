@@ -11,7 +11,8 @@ name="pyhornedowl"
 crate-type=["cdylib"]
 
 [dependencies.pyo3]
-version = "0.12.4"
+git = "https://github.com/PyO3/pyo3"
+branch = "main"
 features = ["extension-module"]
 
 [dependencies]
