@@ -413,11 +413,14 @@ struct PyIndexedOntology {
     #[pyo3(get, set)]
     labels_to_iris: HashMap<String,IRI>,
 
+    #[pyo3(get, set)]
     classes_to_subclasses: HashMap<IRI,HashSet<IRI>>, //axiom typed index would give subclass axioms
+    #[pyo3(get, set)]
     classes_to_superclasses: HashMap<IRI,HashSet<IRI>>,
 
     //The primary store of the axioms is a Horned OWL indexed ontology
     ontology: IRIMappedOntology,
+
     //Need this for converting IRIs to IDs and for saving again afterwards
     mapping: PrefixMapping,
 }
@@ -642,17 +645,19 @@ impl PyIndexedOntology {
         }
     }
 
-    fn get_axioms_for_iri(&mut self, iri: String) -> PyResult<Vec<PyObject>> {
+    fn get_axioms_for_iri(&mut self, iri: String) -> PyResult<Vec<AnnotatedAxiom>> {
         let b = Build::new();
         let iri = b.iri(iri);
 
-        let gil = Python::acquire_gil();
-        let py = gil.python();
+//        let gil = Python::acquire_gil();
+//        let py = gil.python();
 
-        let axioms = self.ontology.get_axs_for_iri(iri)
-                                .filter_map(|aax: &AnnotatedAxiom| {
-                                    Some(PySimpleAxiom::from(&aax.axiom))
-                                }).map(|aax: PySimpleAxiom| {aax.to_object(py)}).collect();
+//        let axioms = self.ontology.get_axs_for_iri(iri)
+//                                .filter_map(|aax: &AnnotatedAxiom| {
+//                                    Some(PySimpleAxiom::from(&aax.axiom))
+//                                }).map(|aax: PySimpleAxiom| {aax.to_object(py)}).collect();
+
+        let axioms = self.ontology.get_axs_for_iri(iri).map(|aax: &AnnotatedAxiom| {aax.clone()} ).collect();
 
         Ok(axioms)
     }

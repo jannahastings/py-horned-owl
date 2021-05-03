@@ -30,3 +30,11 @@ clsid4 = onto.labels_to_iris['tobacco smoker']
 print(clsid4)
 print(dir(clsid4))
 print(clsid4.iri)
+
+
+axms = onto.get_axioms_for_iri(clsid4.iri)
+
+for ax in axms:
+    print(dir(ax))
+
+print(axms)
